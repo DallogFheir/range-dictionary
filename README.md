@@ -21,23 +21,24 @@ RangeDict objects are dictionaries whose keys are Range objects. They can be ini
     rd = RangeDict({
         (1, 2) : "first",
         Range[2, 5] : "second",
-        Range(5, 7, closed_right=True) : "third"
+        Range(5, 7, closed_right=True) : "third",
+        Range(7, float("inf")) : "fourth"
     })
 
 Accessing an int/float from a RangeDict returns its corresponding value.
 
-    3 in rd # True
-    rd[3] # "second"
+    3.5 in rd # True
+    rd[3.5] # "second"
 
 RangeDicts behave similarly to standard dictionaries.
 
-    rd[Range(7, 9)] = "fourth"
-    rd.insert(Range[9, 11], "fifth")
+    rd[Range(7, 9)] = "fifth"
+    rd.insert(Range[9, 11], "sixth")
 
     del rd[Range[2, 5]]
     rd.remove(Range(1, 2))
 
-    rd.get(8) # "fourth"
+    rd.get(8) # "fifth"
     rd.get(100) # None
 
     rd2 = RangeDict()
