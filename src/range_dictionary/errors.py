@@ -26,7 +26,7 @@ class NotRangeError(RangeDictError):
 
 class OverlapError(RangeDictError):
     def __init__(self, key1, key2):
-        super().__init__(f"tree keys cannot overlap ({key1} and {key2})")
+        super().__init__(f"RangeDict keys cannot overlap ({key1} and {key2})")
 
 
 class UnknownDirectionError(RangeDictError):
