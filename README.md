@@ -16,7 +16,7 @@ Range objects represent an interval. They can be open, semi-open or closed.
 
 ## RangeDict
 
-RangeDict objects are dictionaries whose keys are Range objects. They can be initialized using any iterable of 2 int.float values (the corresponding Ranges are open by default).
+RangeDict objects are dictionaries whose keys are Range objects. They can be initialized using any iterable of 2 int/float values (the corresponding Ranges are open by default).
 
     rd = RangeDict({
         (1, 2) : "first",

@@ -2,7 +2,7 @@ from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum
 import operator
-from typing import Any, Generator, Iterable, List, Tuple, Union
+from typing import Any, Dict, Generator, Iterable, List, Tuple, Union
 from .range import Range
 from .errors import (
     InvalidMappingError,
@@ -38,7 +38,7 @@ class AVLTreeNode:
 class RangeDict:
     def __init__(
         self,
-        mapping: Union[None, dict[Union[Iterable, Range], Any], "RangeDict"] = None,
+        mapping: Union[None, Dict[Union[Iterable, Range], Any], "RangeDict"] = None,
     ):
         """A dictionary whose keys are ranges.
 
@@ -70,12 +70,22 @@ class RangeDict:
             raise InvalidMappingError from None
 
     def __repr__(self):
+        node_number = len(self.items_sorted())
+        return f"RangeDict({node_number} node{'s' if node_number != 1 else ''})"
+
+    def __str__(self):
         if self.root is None:
             return "RangeDict()"
 
-        items = ",\n\t".join(
-            f"{k}: {v}" for k, v in sorted(self.items(), key=lambda k: k[0].start)
-        )
+        sorted_items = self.items_sorted()
+
+        if len(sorted_items) > 5:
+            items = "\n\t".join(f"{k}: {v}" for k, v in sorted_items[:2])
+            items += "\n\t...\n\t"
+            items += "\n\t".join(f"{k}: {v}" for k, v in sorted_items[-2:])
+
+        else:
+            items = "\n\t".join(f"{k}: {v}" for k, v in sorted_items)
 
         return "RangeDict({\n\t" + items + "\n})"
 
@@ -110,7 +120,7 @@ class RangeDict:
             return False
 
     def __or__(
-        self, other: Union["RangeDict", dict[Union[Iterable, Range], Any]]
+        self, other: Union["RangeDict", Dict[Union[Iterable, Range], Any]]
     ) -> "RangeDict":
         new_rd = RangeDict()
 
@@ -125,14 +135,14 @@ class RangeDict:
         return new_rd
 
     def __ror__(
-        self, other: Union["RangeDict", dict[Union[Iterable, Range], Any]]
+        self, other: Union["RangeDict", Dict[Union[Iterable, Range], Any]]
     ) -> "RangeDict":
         try:
             return self | other
         except InvalidMappingError:
             raise InvalidMappingError from None
 
-    def __eq__(self, other: Union["RangeDict", dict[Union[Iterable, Range], Any]]):
+    def __eq__(self, other: Union["RangeDict", Dict[Union[Iterable, Range], Any]]):
         return self.items_sorted() == other.items_sorted()
 
     def _check_without_updating_heights(self, path: List[ParentNode]) -> None:
@@ -339,6 +349,14 @@ class RangeDict:
         node.height_right = 1 + max(left_node.height_left, left_node.height_right)
 
         self._rr_rotate(node)
+
+    def print_full(self) -> None:
+        if self.root is None:
+            return "RangeDict()"
+
+        items = "\n\t".join(f"{k}: {v}" for k, v in self.items_sorted())
+
+        print("RangeDict({\n\t" + items + "\n})")
 
     def insert(self, key: Union[Iterable, Range], value: Any) -> None:
         """Insert key-value pairs into the RangeDict.
@@ -598,7 +616,7 @@ class RangeDict:
             return default
 
     def update(
-        self, other: Union["RangeDict", dict[Union[Iterable, Range], Any]]
+        self, other: Union["RangeDict", Dict[Union[Iterable, Range], Any]]
     ) -> None:
         try:
             for k, v in other.items():
