@@ -1,0 +1,13 @@
+LICENSE.md
+README.md
+pyproject.toml
+setup.cfg
+src/RangeDictionary.egg-info/PKG-INFO
+src/RangeDictionary.egg-info/SOURCES.txt
+src/RangeDictionary.egg-info/dependency_links.txt
+src/RangeDictionary.egg-info/not-zip-safe
+src/RangeDictionary.egg-info/top_level.txt
+src/range_dictionary/__init__.py
+src/range_dictionary/errors.py
+src/range_dictionary/range.py
+src/range_dictionary/rangedict.py
