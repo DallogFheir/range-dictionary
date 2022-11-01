@@ -2,6 +2,8 @@
 
 RangeDictionary package provides Range and RangeDict classes.
 
+    from range_dictionary import Range, RangeDict
+
 ## Range
 
 Range objects represent an interval. They can be open, semi-open or closed.
