@@ -373,7 +373,7 @@ class RangeDict:
             if not isinstance(key, Range):
                 start, end = key
                 key = Range[start, end] if isinstance(key, list) else Range(start, end)
-        except ValueError:
+        except (ValueError, TypeError):
             raise InvalidMappingError from None
 
         if self.root is None:
